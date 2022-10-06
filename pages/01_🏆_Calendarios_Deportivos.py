@@ -90,7 +90,7 @@ años=df.groupby(['FECHA'])[['index']].count().reset_index()
 años['FECHA']=años['FECHA'].dt.year
 años=años.groupby(['FECHA'])[['index']].sum().reset_index()
 st.markdown("<h4 style = 'text-align:center;color:gray;'>NUMERO DE CALENDARIOS DEPORTIVOS DONDE PARTICIPAN COLOMBIANOS📆📅  </h4>", unsafe_allow_html=True)
-c1,c2,c3,c4,c5 = st.columns((1,1,1,1,1))
+c1,c2,c3,c4,c5 = st.columns([0.3,1,1,1, 0.35])
 #eventos del año 2015
 a1=años.loc[0,'index']
 #eventos del año 2016
@@ -119,35 +119,36 @@ dff= pd.DataFrame(pd.date_range(start=df['FECHA'].min(), end=df['FECHA'].max()))
 df2= pd.merge(dff, cf, on ='FECHA', how ='left')
 # generar base
 df2.iloc[:,1:]= df2.rolling(window=3).mean().fillna(0)
-
+c1,c2,c3 = st.columns([0.2,5, 0.2])
 fig = px.line(df2, x='FECHA', y='index')
 
 # agregar detalles
 fig.update_layout(
     xaxis_title = 'Fecha',
     yaxis_title = 'Cantidad de calendarios',
-    template = 'plotly_dark',
+    template = 'simple_white',
     title_x = 0.5,
-    width=1100, height=600,
+    width=1150, height=500,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)')
 fig.update_traces(line_color='red')
-st.plotly_chart(fig)
+c2.plotly_chart(fig)
 
 
 #--------------------------------------------------------------------------------------------------------------------------
 
 st.markdown("<h2 style = 'text-align:center;color:gray;'>PARTICIPACION DE COLOMBIA EN EL DEPORTE MUNDIAL 🏁🚩🎌</h2>", unsafe_allow_html=True)
-c1,c2 = st.columns((1,1))
+c1,c2,c3,c4,c5 = st.columns([0.1,3,0.1,3, 0.1])
 df['NACIONAL/INTERNACIONAL']=0
 df['NACIONAL/INTERNACIONAL']=df['PAIS'].apply(lambda x: "NACIONAL" if x =='COLOMBIA' else "INTERNACIONAL")
 ni=df.groupby(['NACIONAL/INTERNACIONAL'])[['index']].count().reset_index()
 
 st.markdown("<h4 style = 'text-align:center;color:gray;'>PARTICIPACIONES DE COLOMBIA EN EL MUNDO 🏁🚩🎌</h4>", unsafe_allow_html=True)
-fig = px.pie(ni , values = 'index', names = 'NACIONAL/INTERNACIONAL')
+fig = px.pie(ni , values = 'index', names = 'NACIONAL/INTERNACIONAL',color='NACIONAL/INTERNACIONAL',color_discrete_map={'NACIONAL':'red',
+                                 'INTERNACIONAL':'dimgray'})
 # agregar detalles a la gráfica
 fig.update_layout(
-    template = 'plotly_dark',
+    template = 'simple_white',
     legend_title = 'LOCACION:',
     title_x = 0.5,    width=550, height=550)
 
@@ -157,8 +158,8 @@ fig.update_layout(legend=dict(
     y=-0.06,
     xanchor="right",
     x=0.9))
-c1.markdown("<h4 style = 'text-align:center;color:gray;'>PROPORCION DE CALENDARIOS NACIONALES E INTERNACIONALES</h4>", unsafe_allow_html=True)
-c1.plotly_chart(fig)
+c2.markdown("<h4 style = 'text-align:center;color:gray;'>PROPORCION DE CALENDARIOS NACIONALES E INTERNACIONALES</h4>", unsafe_allow_html=True)
+c2.plotly_chart(fig)
 
 ff=df.groupby(['PAIS'])[['FECHA']].count().sort_values('FECHA', ascending = False).reset_index()
 ff['nc'] = ff['PAIS'].str.capitalize()
@@ -176,21 +177,22 @@ ff=ff.rename(columns={'FECHA':'PARTICIPACIONES'})
 
 fs=ff.head(10)
 # crear gráfica
-fig = px.bar(fs, x='PAIS', y='PARTICIPACIONES',color='PAIS',)
+fig = px.bar(fs, x='PAIS', y='PARTICIPACIONES',color='PAIS',color_discrete_map={'EEUU':'red',
+                                 'BRASIL':'lawngreen','MEXICO':'darkgreen','ARGENTINA':'mediumturquoise','PERU':'firebrick','CANADA':'white','CHILE':'blue','FRANCIA':'midnightblue','ECUADOR':'yellow','ITALIA':'lime'})
 
 # agregar detalles a la gráfica
 fig.update_layout(
     xaxis_title = 'PAIS',
     yaxis_title = 'PARTICIPACIONES',
     
-    template = 'plotly_dark',
+    template = 'simple_white',
     title_x = 0.5,    width=600, height=525,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)')
 fig.update_layout(showlegend=False)
                 
-c2.markdown("<h4 style = 'text-align:center;color:gray;'>TOP DE PAISES EN DONDE MAS REPRESNTAN LOS COLOMBIANOS</h4>", unsafe_allow_html=True)
-c2.plotly_chart(fig)
+c4.markdown("<h4 style = 'text-align:center;color:gray;'>TOP DE PAISES EN DONDE MAS REPRESNTAN LOS COLOMBIANOS</h4>", unsafe_allow_html=True)
+c4.plotly_chart(fig)
 
 ff=df.groupby(['PAIS'])[['FECHA']].count().sort_values('FECHA', ascending = False).reset_index()
 ff['nc'] = ff['PAIS'].str.capitalize()
@@ -206,7 +208,7 @@ ff=ff.drop(li)
 ff=ff.drop(l) 
 ff=ff.rename(columns={'FECHA':'PARTICIPACIONES'})
 
-
+c1,c2,c3= st.columns([0.2, 5, 0.2])
     
 fig = px.scatter_geo(ff, locations="nc", color="PAIS", hover_name="PAIS", size="PARTICIPACIONES",
                       template = 'plotly_dark',
@@ -214,44 +216,46 @@ fig = px.scatter_geo(ff, locations="nc", color="PAIS", hover_name="PAIS", size="
                       width=1100, height=600
                   )
 fig.update_layout(showlegend=False) 
-st.plotly_chart(fig)
+c2.plotly_chart(fig)
 
 
 #--------------------------------------------------------------------------------------------------------------------------
 df['FECHA']=df['FECHA'].dt.strftime('%m-%d-%Y')
 df=df.rename(columns={'TIPO DE CALENDARIO':'TIPO_DE_CALENDARIO'})
-cpp=df.groupby(['FECHA','PAIS','TIPO_DE_CALENDARIO','DEPORTE'])[['index']].count().sort_values('index', ascending = False).reset_index().rename(columns={'index':'NUMERO DE EVENTOS'})
+cpp=df.groupby(['FECHA','PAIS','TIPO_DE_CALENDARIO','DEPORTE'])[['index']].count().sort_values('index', ascending = False).reset_index().rename(columns={'index':'NUMERO_DE_EVENTOS'})
 if st.checkbox('Obtener datos por fecha,pais, tipo de calendario y deporte', False):
     
     
     fig = go.Figure(data=[go.Table(
         header=dict(values=list(cpp.columns),
-        fill_color='lightgrey',
-        line_color='darkslategray'),
-        cells=dict(values=[cpp.FECHA, cpp.PAIS, cpp.TIPO_DE_CALENDARIO, cpp.DEPORTE],fill_color='white',line_color='lightgrey'))
+        fill_color='red',
+        line_color='gray'),
+        
+       cells=dict(values=[cpp.FECHA, cpp.PAIS, cpp.TIPO_DE_CALENDARIO, cpp.DEPORTE,cpp.NUMERO_DE_EVENTOS],fill_color='black',line_color='lightgrey'))
     ])
     
-    fig.update_layout(width=500, height=450)
+    fig.update_layout(width=1500, height=600)
+    st.plotly_chart(fig)
+
 #--------------------------------------------------------------------------------------------------------------------------
 from PIL import Image
 
-image2= Image.open('dep.jpg')
-
-st.image(image2) 
-
+background = Image.open('banderas.jpg')
+col1, col2, col3 = st.columns([0.2, 5, 0.2])
+col2.image(background, width=1138)
 #--------------------------------------------------------------------------------------------------------------------------
 c1, c2= st.columns((1,1))
 
 
-fig = px.pie(d_f , values = 'index', names = 'TIPO DE CALENDARIO')
+fig = px.pie(d_f , values = 'index', names = 'TIPO DE CALENDARIO',color='TIPO DE CALENDARIO',color_discrete_map={'DEPORTIVO':'red','CALENDARIO NACIONAL':'silver','CALENDARIO INTERNACIONAL':'maroon','ACADEMICO':'orangered','CONCENTRACION':'sienna','ADMINISTRATIVO':'grey','CAPACITACION':'whitesmoke'})
 
 # agregar detalles a la gráfica
 fig.update_layout(
-    template = 'plotly_dark',
+    template = 'simple_white',
     legend_title = '<b>Tipos de calendarios: <b>',
     title_x = 0.4, 
-    width=540, height=650)
-fig.update_layout(legend=dict(
+    width=540, height=650,
+    legend=dict(
     orientation="h",
     yanchor="bottom",
     y=-0.4,
@@ -267,14 +271,14 @@ ft=ft.head(10)
 
 
 # crear gráfica
-fig = px.bar(ft, x='DEPORTE', y='PARTICIPACIONES',color='DEPORTE')
+fig = px.bar(ft, x='DEPORTE', y='PARTICIPACIONES',color='DEPORTE',color_discrete_map={'GOLF':'silver','TENIS':'lime','AUTOMOVILISMO':'red','PATINAJE':'magenta','ECUESTRE':'saddlebrown','GIMNASIA':'gold','LUCHA':'orangered','TIRO DEPORTIVO':'lightslategray','ACTIVIDADES SUBACUATICAS':'navy','JUDO':'white'})
 
 # agregar detalles a la gráfica
 fig.update_layout(
     xaxis_title = 'DEPORTE',
     yaxis_title = 'PARTICIPACIONES',
     
-    template = 'plotly_dark',
+    template = 'simple_white',
     title_x = 0.5, 
     width=650, height=600,
     paper_bgcolor='rgba(0,0,0,0)',
@@ -282,6 +286,7 @@ fig.update_layout(
 fig.update_layout(showlegend=False)               
 c2.markdown("<h4 style = 'text-align:center;color:gray;'>DEPORTES QUE PROGRAMAN MAS FECHAS</h4>", unsafe_allow_html=True)
 c2.plotly_chart(fig)
+
 
 
 #--------------------------------------------------------------------------------------------------------------------------
