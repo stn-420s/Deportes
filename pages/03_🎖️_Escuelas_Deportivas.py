@@ -11,7 +11,6 @@ import pydeck as pdk
 import plotly
 import datetime
 from datetime import datetime
-import matplotlib as plt
 import plotly.express as px
 from plotly.subplots import make_subplots
 import matplotlib.pyplot as plot 
