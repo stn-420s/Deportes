@@ -2,7 +2,7 @@ pandas
 plotly
 streamlit
 datetime
-matplotlib
+
 
 
 
