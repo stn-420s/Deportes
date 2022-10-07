@@ -7,15 +7,11 @@ Created on Tue Oct  4 18:04:46 2022
 
 import streamlit as st 
 import pandas as pd
-import pydeck as pdk
-import plotly
+import plotlyma
 import datetime
 from datetime import datetime
 import plotly.express as px
-from plotly.subplots import make_subplots
 import matplotlib.pyplot as plot 
-import seaborn as sns 
-import plotly.graph_objects as go 
 
 st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center; color: red ;'>ESCUELAS DEPORTIVAS</h1>", unsafe_allow_html=True)
