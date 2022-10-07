@@ -7,11 +7,10 @@ Created on Tue Oct  4 18:04:46 2022
 
 import streamlit as st 
 import pandas as pd
-import plotlyma
 import datetime
 from datetime import datetime
 import plotly.express as px
-import matplotlib.pyplot as plot 
+
 
 st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center; color: red ;'>ESCUELAS DEPORTIVAS</h1>", unsafe_allow_html=True)
