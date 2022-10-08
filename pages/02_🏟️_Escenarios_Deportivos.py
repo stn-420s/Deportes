@@ -70,7 +70,7 @@ c1.markdown("<h3 style='text-align: center; color: gray;'> TOP 10 DEPARTAMENTOS 
 df_d2 = df_d.groupby(['DEPARTAMENTO'])[['NOMBRE DEL ESCENARIO']].count().reset_index().sort_values('NOMBRE DEL ESCENARIO',ascending=False).rename(columns = {'NOMBRE DEL ESCENARIO':'CANTIDAD DE ESCENARIOS'}).head(10)
 
 fig = px.bar(df_d2, x='DEPARTAMENTO', y='CANTIDAD DE ESCENARIOS', color = 'DEPARTAMENTO',
-             color_discrete_map={'VALLE DEL CAUCA':'darkturquoise','BOLIVAR':'green','ATLANTICO':'white','RISARALDA':'forestgreen','BOYACA':'red','BOGOTÁ D.C.':'yellow','CUNDINAMARCA':'turquoise','CORDOBA':'royalblue','CALDAS':'gold','ANTIOQUIA':'lawngreen'},
+             color_discrete_map={'VALLE DEL CAUCA':'darkturquoise','BOLIVAR':'green','ATLANTICO':'grey','RISARALDA':'forestgreen','BOYACA':'red','BOGOTÁ D.C.':'yellow','CUNDINAMARCA':'turquoise','CORDOBA':'royalblue','CALDAS':'gold','ANTIOQUIA':'lawngreen'},
              width=650, height=500)
 
 # Editar gráfica
